@@ -9,27 +9,31 @@ module.exports = function ({ api }) {
 	const admin = adminData.Admin;
 
 	return async (event) => {
-
-		if (!event.body) return;
-
+		
+		if (!event.body || event.body.trim() === "") return;
 		if (event.senderID === api.getCurrentUserID()) return;
-
+	
 		let s = diacritics.remove(event.body.toLowerCase());
-		const keywords = ["mua acc", "shop acc", "ban acc", "nap uc", "thu acc", "gop acc", "tim acc", "tim ac", "ban ac", "uy tin", "co acc", "co ac"];
-		let containsKeyword = keywords.some(keyword => s.includes(keyword));
-
-		if (!containsKeyword) return;
-
+	
+		const list1 = ["nap", "uc"];
+		const list2 = ["shop", "ban", "thu", "gop", "tim", "acc", "gdtg", "tram", "mua", "uy tin", "ut"];
+	
 		let message;
-		if (s.includes("nap uc")) {
+	
+		if (list1.some(keyword => s.includes(keyword))) {
 			message = "Cần Nạp UC Liên Hệ Neil PUBG Có Nạp UC Quốc Tế. UC Bảo Hành 100%";
+		} else if (list2.some(keyword => s.includes(keyword))) {
+			message = "Hỗ Trợ All Dịch Vụ PUBG Mobile. Thu Mua Acc Giá Cao, Hỗ Trợ Góp Acc Từ 30-50% Vào Acc.";
 		} else {
-			message = "Hỗ Trợ All Dịch Vụ PUBG Mobile. Thu Mua Acc Giá Cao, Hỗ Trợ Góp Acc Từ 30-50% Được Vào Acc Chơi.";
+			return;
 		}
-
-		return api.shareContact(message, admin, event.threadID, (err) => {
-			if (err) return console.error(err);
-		}, event.messageID);
-        
+	
+		try {
+			await api.shareContact(message, admin, event.threadID, (err) => {
+				if (err) console.error(err);
+			}, event.messageID);
+		} catch (err) {
+			logger.Normal("Lỗi Khi Gửi Tin Nhắn:", err);
+		}
 	};
 };
