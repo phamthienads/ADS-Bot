@@ -9,7 +9,7 @@ module.exports = function ({ api }) {
 	const admin = adminData.Admin;
 
 	return async (event) => {
-		
+
 		if (!event.body || event.body.trim() === "") return;
 		if (event.senderID === api.getCurrentUserID()) return;
 	
@@ -21,7 +21,7 @@ module.exports = function ({ api }) {
 		let message;
 	
 		if (list1.some(keyword => s.includes(keyword))) {
-			message = "Cần Nạp UC Liên Hệ Neil PUBG Có Nạp UC Quốc Tế. UC Bảo Hành 100%";
+			message = "Cần Nạp UC Liên Hệ Neil PUBG, Có Nạp UC Quốc Tế. UC Bảo Hành 100%";
 		} else if (list2.some(keyword => s.includes(keyword))) {
 			message = "Hỗ Trợ All Dịch Vụ PUBG Mobile. Thu Mua Acc Giá Cao, Hỗ Trợ Góp Acc Từ 30-50% Vào Acc.";
 		} else {
@@ -30,7 +30,7 @@ module.exports = function ({ api }) {
 	
 		try {
 			await api.shareContact(message, admin, event.threadID, (err) => {
-				if (err) console.error(err);
+				if (err) logger.Normal("Lỗi Khi Gửi Tin Nhắn:", err);
 			}, event.messageID);
 		} catch (err) {
 			logger.Normal("Lỗi Khi Gửi Tin Nhắn:", err);
