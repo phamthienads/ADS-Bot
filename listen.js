@@ -15,7 +15,7 @@ module.exports = function ({ api }) {
 		if (event.senderID === api.getCurrentUserID()) return;
 
 		let s = diacritics.remove(event.body.toLowerCase());
-		const keywords = ["mua acc", "shop acc", "ban acc", "nap uc", "thu acc", "gop acc", "tim acc"];
+		const keywords = ["mua acc", "shop acc", "ban acc", "nap uc", "thu acc", "gop acc", "tim acc", "tim ac", "ban ac", "uy tin", "co acc", "co ac"];
 		let containsKeyword = keywords.some(keyword => s.includes(keyword));
 
 		if (!containsKeyword) return;
